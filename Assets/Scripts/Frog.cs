@@ -5,6 +5,7 @@ using UnityEngine;
 public class Frog : MonoBehaviour
 {
     Rigidbody rb;
+    [SerializeField] float vitesse;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +15,8 @@ public class Frog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //transform.Translate(new Vector3(0, 0, vitesse) * Time.deltaTime);
+
     }
+
 }

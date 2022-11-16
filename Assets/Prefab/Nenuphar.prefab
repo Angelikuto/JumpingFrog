@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limite: -5
-  spawn: 20
-  vitesse: -5
+  spawn: 25
+  vitesse: 0
 --- !u!54 &5490852233660161983
 Rigidbody:
   m_ObjectHideFlags: 0
