@@ -58,7 +58,7 @@ public class Frog : MonoBehaviour
         }
         else
         {
-           // slideSpeed = Mathf.Lerp(slideSpeed, 0, decceleration);
+           //slideSpeed = Mathf.Lerp(slideSpeed, 0, decceleration);
         }
 
     }
