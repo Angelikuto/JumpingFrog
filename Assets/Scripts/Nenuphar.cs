@@ -41,10 +41,4 @@ public class Nenuphar : MonoBehaviour
         
     }
 
-  
-
-    /*private void FixedUpdate()
-    {
-        rb.velocity = new Vector3(0, 0, vitesse);
-    }*/
 }

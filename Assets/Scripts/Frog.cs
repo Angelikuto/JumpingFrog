@@ -22,9 +22,14 @@ public class Frog : MonoBehaviour
 
     [SerializeField] float decceleration = 2;
 
+    GameManager gameManager;
+
+    public bool collided = true;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Start is called before the first frame update
@@ -35,15 +40,25 @@ public class Frog : MonoBehaviour
 
     void MoveForward()
     {
-        transform.DOMoveZ(transform.position.z + 5, 1f).SetEase(Ease.Linear);
-        transform.DOMoveY(transform.position.y + 3, 0.5f).SetEase(Ease.OutQuad);
-        transform.DOMoveY(transform.position.y, 0.5f)
-            .SetDelay(0.5f)
-            .SetEase(Ease.InQuad)
-            .OnComplete(MoveForward);
+        Debug.Log("Move Forward " + collided);
+        if (collided)
+        {
 
+            transform.DOMoveZ(transform.position.z + 5, 1f).SetEase(Ease.Linear);
+            transform.DOMoveY(transform.position.y + 3, 0.5f).SetEase(Ease.OutQuad);
+            transform.DOMoveY(transform.position.y, 0.5f)
+                .SetDelay(0.5f)
+                .SetEase(Ease.InQuad)
+                .OnComplete(MoveForward);
 
-       
+            collided = false;
+
+        }
+        else
+        {
+            Fail();
+        }
+
     }
 
     // Update is called once per frame
@@ -54,7 +69,7 @@ public class Frog : MonoBehaviour
         {
             //willjump = true;
 
-            slideDirection = new Vector3(joystick.Direction.x,0,0).normalized;
+            slideDirection = new Vector3(joystick.Direction.x,0,0);
         }
         else
         {
@@ -67,7 +82,7 @@ public class Frog : MonoBehaviour
     {
         if (willjump == true)
         {
-           rb.velocity = new Vector3(0, saut, 0);
+           //rb.velocity = new Vector3(0, saut, 0);
             willjump = false;
             Debug.Log(willjump);
         }
@@ -78,6 +93,39 @@ public class Frog : MonoBehaviour
 
         rb.velocity = slideDirection * slideSpeed;
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("collide with Nenuphar" + collision.gameObject.name);
+        if ( collision.gameObject.tag == "Nenuphar")
+        {
+            gameManager.AddScore(20);
+            //  gameManager.score = gameManager.score + 20;
+            collided = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bonus"))
+        {
+            // Aouter des points
+            Debug.Log("Point");
+            gameManager.AddScore(15);
+        }
+    }
+
+    void Fail()
+    {
+        Debug.Log("GameOver");
+        DOTween.Kill(gameObject);
+        rb.velocity = new Vector3(0, -10, 0);
+        rb.useGravity = true;
+        rb.isKinematic = false;
+        GetComponent<Animator>().enabled = false;
+        enabled = false;
+        gameManager.GameOver();
     }
 
 }
